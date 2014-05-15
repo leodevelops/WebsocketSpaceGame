@@ -34,7 +34,8 @@ public class WebsocketServer {
 
         ResourceHandler staticResource = new ResourceHandler();
         staticResource.setDirectoriesListed(false);
-        staticResource.setResourceBase("./static");
+        String staticDir = WebsocketServer.class.getResource("/static/").toExternalForm();
+        staticResource.setResourceBase(staticDir);
 
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[] { websocket, staticResource });
