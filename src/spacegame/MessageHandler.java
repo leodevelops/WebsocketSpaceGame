@@ -30,6 +30,12 @@ public class MessageHandler {
         } catch(IllegalArgumentException e) {
             type = MessageType.NONE;
         }
+        if(type != MessageType.HELP && type != MessageType.LOGIN && type != MessageType.NONE) {
+            if(Game.getInstance().getPlayers().get(session) == null) {
+                Game.getInstance().getEventQueue().execute(new SendMessageAction(session, "Please login first."));
+                return;
+            }
+        }
         switch(type) {
             case HELP:
                 Game.getInstance().getEventQueue().execute(new HelpAction(session));
