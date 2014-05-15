@@ -23,7 +23,11 @@ public class Transport {
 
     public static void send(String sessionId, String message) {
         try {
-            sessions.get(sessionId).getBasicRemote().sendText(message);
+            Session session = sessions.get(sessionId);
+            if(session == null) {
+                return;
+            }
+            session.getBasicRemote().sendText(message);
         } catch (IOException e) {
             e.printStackTrace();
         }
