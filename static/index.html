@@ -35,7 +35,7 @@ var message_area_container = document.getElementById("message_area_container");
 var input_txt = document.getElementById("input_txt");
 var input_frm = document.getElementById("input_frm");
 
-var socket = new WebSocket("ws://localhost:8888/ws/game/");
+var socket = new WebSocket("ws://" + location.host + "/ws/game/");
 socket.onopen = function() {
 	message("Connection opened.");
 }
