@@ -7,11 +7,11 @@ import spacegame.Ship;
 /**
  * Created by Leo on 10/05/2014.
  */
-public class MineAction implements Runnable {
+public class MiningProgressAction implements Runnable {
     private Player player;
     private Asteroid asteroid;
 
-    public MineAction(Player player, Asteroid asteroid) {
+    public MiningProgressAction(Player player, Asteroid asteroid) {
         this.player = player;
         this.asteroid = asteroid;
     }

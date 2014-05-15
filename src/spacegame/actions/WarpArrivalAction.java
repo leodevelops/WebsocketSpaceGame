@@ -5,13 +5,13 @@ import spacegame.Player;
 /**
  * Created by Leo on 09/05/2014.
  */
-public class WarpAction implements Runnable {
+public class WarpArrivalAction implements Runnable {
     private Player player;
     private int positionX;
     private int positionY;
     private SendMessageAction notification;
 
-    public WarpAction(Player player, int positionX, int positionY) {
+    public WarpArrivalAction(Player player, int positionX, int positionY) {
         this.player = player;
         this.positionX = positionX;
         this.positionY = positionY;

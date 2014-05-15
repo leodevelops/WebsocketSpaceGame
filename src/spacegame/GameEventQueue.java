@@ -12,39 +12,61 @@ import java.util.concurrent.TimeUnit;
  * Created by Leo on 14/05/2014.
  */
 public class GameEventQueue implements Runnable {
-    private List<Runnable> events;
+    private final List<Runnable> events;
+    private final List<Runnable> newEvents;
     private ScheduledExecutorService executorService;
 
     public GameEventQueue() {
         events = new LinkedList<Runnable>();
+        newEvents = new LinkedList<Runnable>();
         executorService = new ScheduledThreadPoolExecutor(4);
     }
 
-    public void addEvent(Runnable event) {
+    public void execute(Runnable event) {
         synchronized (events) {
-            events.add(event);
+            newEvents.add(event);
+            events.notify();
         }
     }
 
-    public void execute(Runnable event) {
-        addEvent(event);
+    public void executeAll(Runnable[] events) {
+        synchronized (this.events) {
+            for(Runnable r : events) {
+                this.newEvents.add(r);
+            }
+            this.events.notify();
+        }
     }
 
     public ScheduledFuture<?> schedule(final Runnable event, long delay, TimeUnit timeUnit) {
         Runnable injector = new Runnable() {
             @Override
             public void run() {
-                GameEventQueue.this.addEvent(event);
+                GameEventQueue.this.execute(event);
             }
         };
         return executorService.schedule(injector, delay, timeUnit);
+    }
+
+    public ScheduledFuture<?> scheduleRepeat(final Runnable event, long delay, TimeUnit timeUnit) {
+        Runnable injector = new Runnable() {
+            @Override
+            public void run() {
+                GameEventQueue.this.execute(event);
+            }
+        };
+        return executorService.scheduleWithFixedDelay(injector, delay, delay, timeUnit);
     }
 
     @Override
     public void run() {
         while(true) {
             synchronized (events) {
-                if (events.isEmpty()) {
+                if(!newEvents.isEmpty()) {
+                    events.addAll(newEvents);
+                    newEvents.clear();
+                }
+                if(events.isEmpty()) {
                     try {
                         events.wait();
                     } catch (InterruptedException e) {
