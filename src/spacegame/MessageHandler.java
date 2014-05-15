@@ -18,7 +18,7 @@ public class MessageHandler {
         return instance;
     }
 
-    public enum MessageType { NONE, LOGIN, SAY, SCAN, WARP, MINE, STATUS }
+    public enum MessageType { NONE, HELP, LOGIN, SAY, SCAN, WARP, MINE, STATUS, SELL }
 
     private final Logger log = Logger.getLogger(MessageHandler.class.getName());
 
@@ -31,6 +31,9 @@ public class MessageHandler {
             type = MessageType.NONE;
         }
         switch(type) {
+            case HELP:
+                Game.getInstance().getEventQueue().execute(new HelpAction(session));
+                break;
             case LOGIN:
                 Game.getInstance().getEventQueue().execute(new LoginAction(session, command[1]));
                 break;
@@ -51,6 +54,11 @@ public class MessageHandler {
                 break;
             case STATUS:
                 Game.getInstance().getEventQueue().execute(new StatusAction(session));
+                break;
+            case SELL:
+                String[] sellArgs = command[1].split(" ", 2);
+                Game.getInstance().getEventQueue().execute(new SellMetalAction(session,
+                        Integer.parseInt(sellArgs[0]), Math.abs(Integer.parseInt(sellArgs[1]))));
                 break;
             default:
                 log.warning(String.format("Invalid command: %s", command[0].toUpperCase()));

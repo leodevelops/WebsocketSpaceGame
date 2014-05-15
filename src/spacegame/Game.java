@@ -27,8 +27,11 @@ public class Game {
     public Game() {
         players = new HashMap<String, Player>();
         spaceSystem = new SpaceSystem(1, "Slow Bob I");
-        spaceSystem.addAsteroid(new Asteroid(1, 5, 23, 44));
-        spaceSystem.addAsteroid(new Asteroid(2, 100, 71, 132));
+        spaceSystem.addAsteroid(new Asteroid(1, 500, 23, 44));
+        spaceSystem.addAsteroid(new Asteroid(2, 500, 71, 132));
+
+        spaceSystem.addPlanet(new Planet(1, 1, 91, 4));
+        spaceSystem.addPlanet(new Planet(2, 3, 168, 74));
 
         eventQueue = new GameEventQueue();
         new Thread(eventQueue).start();

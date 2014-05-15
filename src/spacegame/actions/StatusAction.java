@@ -19,8 +19,9 @@ public class StatusAction implements Runnable {
         Player player = Game.getInstance().getPlayers().get(session);
         Ship ship = player.getShip();
         SendMessageAction sendMessageAction = new SendMessageAction(session,
-                String.format("You are located at (%d, %d) | Cargo: %d/%d", player.getPositionX(),
-                        player.getPositionY(), ship.getCargoCurrent(), ship.getCargoMaximum()));
+                String.format("You are located at [%s] (%d, %d) | Cargo: %d/%d | Credits: %d",
+                        player.getSpaceSystem().getName(), player.getPositionX(), player.getPositionY(),
+                        ship.getCargoCurrent(), ship.getCargoMaximum(), player.getCredits()));
         Game.getInstance().getEventQueue().execute(sendMessageAction);
     }
 }

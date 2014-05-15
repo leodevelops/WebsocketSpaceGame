@@ -13,6 +13,7 @@ public class Player implements CartesianPosition {
     private int positionY;
     private Ship ship;
     private ScheduledFuture miningActivity;
+    private int credits;
 
     public Player(String sessionId, String username) {
         this.sessionId = sessionId;
@@ -75,5 +76,13 @@ public class Player implements CartesianPosition {
 
     public void setMiningActivity(ScheduledFuture miningActivity) {
         this.miningActivity = miningActivity;
+    }
+
+    public int getCredits() {
+        return credits;
+    }
+
+    public void setCredits(int credits) {
+        this.credits = credits;
     }
 }

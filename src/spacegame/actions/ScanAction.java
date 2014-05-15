@@ -2,6 +2,7 @@ package spacegame.actions;
 
 import spacegame.Asteroid;
 import spacegame.Game;
+import spacegame.Planet;
 import spacegame.Player;
 
 /**
@@ -20,9 +21,13 @@ public class ScanAction implements Runnable {
         StringBuilder resp = new StringBuilder();
         resp.append("Scanning system...");
         resp.append("<ul>");
-        for(Asteroid asteroid : player.getSpaceSystem().scanAsteroids()) {
+        for(Asteroid asteroid : player.getSpaceSystem().getAsteroids()) {
             resp.append(String.format("<li>Asteroid #%d [Metal] @ (%d, %d)</li>",
                     asteroid.getId(), asteroid.getPositionX(), asteroid.getPositionY()));
+        }
+        for(Planet planet : player.getSpaceSystem().getPlanets()) {
+            resp.append(String.format("<li>Planet #%d @ (%d, %d)</li>", planet.getId(), planet.getPositionX(),
+                    planet.getPositionY()));
         }
         resp.append("</ul>");
         SendMessageAction sendMessageAction = new SendMessageAction(session, resp.toString());

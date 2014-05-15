@@ -10,6 +10,7 @@ public class SpaceSystem {
     private String name;
     private Map<String, Player> players;
     private Map<Integer, Asteroid> asteroids;
+    private Map<Integer, Planet> planets;
 
     public SpaceSystem(int id, String name) {
         this.id = id;
@@ -17,9 +18,22 @@ public class SpaceSystem {
 
         players = new HashMap<String, Player>();
         asteroids = new HashMap<Integer, Asteroid>();
+        planets = new HashMap<Integer, Planet>();
     }
 
-    public Collection<Asteroid> scanAsteroids() {
+    public Collection<Planet> getPlanets() {
+        return planets.values();
+    }
+
+    public Planet getPlanet(int planet) {
+        return planets.get(Integer.valueOf(planet));
+    }
+
+    public void addPlanet(Planet planet) {
+        planets.put(Integer.valueOf(planet.getId()), planet);
+    }
+
+    public Collection<Asteroid> getAsteroids() {
         return asteroids.values();
     }
 
