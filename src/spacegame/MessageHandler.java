@@ -2,6 +2,8 @@ package spacegame;
 
 import spacegame.actions.*;
 
+import java.util.logging.Logger;
+
 /**
  * Created by Leo on 14/05/2014.
  */
@@ -16,11 +18,18 @@ public class MessageHandler {
         return instance;
     }
 
-    public enum MessageType { LOGIN, SAY, SCAN, WARP, MINE, STATUS }
+    public enum MessageType { NONE, LOGIN, SAY, SCAN, WARP, MINE, STATUS }
+
+    private final Logger log = Logger.getLogger(MessageHandler.class.getName());
 
     public void handle(String session, String message) {
         String[] command = message.split(" ", 2);
-        MessageType type = MessageType.valueOf(command[0].toUpperCase());
+        MessageType type;
+        try {
+            type = MessageType.valueOf(command[0].toUpperCase());
+        } catch(IllegalArgumentException e) {
+            type = MessageType.NONE;
+        }
         switch(type) {
             case LOGIN:
                 Game.getInstance().getEventQueue().execute(new LoginAction(session, command[1]));
@@ -42,6 +51,10 @@ public class MessageHandler {
                 break;
             case STATUS:
                 Game.getInstance().getEventQueue().execute(new StatusAction(session));
+                break;
+            default:
+                log.warning(String.format("Invalid command: %s", command[0].toUpperCase()));
+                Game.getInstance().getEventQueue().execute(new SendMessageAction(session, "You can't do that."));
                 break;
         }
     }

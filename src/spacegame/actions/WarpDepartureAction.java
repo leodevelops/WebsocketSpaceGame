@@ -23,6 +23,9 @@ public class WarpDepartureAction implements Runnable {
     @Override
     public void run() {
         Player player = Game.getInstance().getPlayers().get(session);
+        if(player == null) {
+            return;
+        }
         int distance = Util.calculateDistance(destinationX, destinationY,
                 player.getPositionX(), player.getPositionY());
         int eta = Math.max((int) (distance / 10), 1);
