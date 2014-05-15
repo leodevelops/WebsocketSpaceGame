@@ -1,7 +1,10 @@
 package websocket;
 
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer;
 
@@ -26,11 +29,19 @@ public class WebsocketServer {
         connector.setPort(port);
         server.addConnector(connector);
 
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.setContextPath("/");
-        server.setHandler(context);
+        ServletContextHandler websocket = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        websocket.setContextPath("/ws/");
 
-        ServerContainer container = WebSocketServerContainerInitializer.configureContext(context);
+        ResourceHandler staticResource = new ResourceHandler();
+        staticResource.setDirectoriesListed(false);
+        staticResource.setResourceBase("./static");
+
+        HandlerList handlers = new HandlerList();
+        handlers.setHandlers(new Handler[] { websocket, staticResource });
+
+        server.setHandler(handlers);
+
+        ServerContainer container = WebSocketServerContainerInitializer.configureContext(websocket);
         try {
             container.addEndpoint(Transport.class);
 
