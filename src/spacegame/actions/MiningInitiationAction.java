@@ -1,9 +1,6 @@
 package spacegame.actions;
 
-import spacegame.Asteroid;
-import spacegame.Game;
-import spacegame.Player;
-import spacegame.Util;
+import spacegame.*;
 
 import java.util.concurrent.TimeUnit;
 
@@ -22,6 +19,7 @@ public class MiningInitiationAction implements Runnable {
     @Override
     public void run() {
         Player player = Game.getInstance().getPlayers().get(session);
+        Ship ship = player.getShip();
         Asteroid asteroid = player.getSpaceSystem().getAsteroid(this.asteroid);
         if(Util.calculateDistance(player, asteroid) > 10) {
             SendMessageAction sendMessageAction = new SendMessageAction(session, "Too far away...");
@@ -30,7 +28,7 @@ public class MiningInitiationAction implements Runnable {
         }
         MiningProgressAction mineAction = new MiningProgressAction(player, asteroid);
         new MineCancelAction(player).run();
-        player.setMiningActivity(Game.getInstance().getEventQueue().scheduleRepeat(mineAction, 5, TimeUnit.SECONDS));
+        ship.setMiningActivity(Game.getInstance().getEventQueue().scheduleRepeat(mineAction, 5, TimeUnit.SECONDS));
         SendMessageAction sendMessageAction = new SendMessageAction(session, "Beginning mining operations...");
         Game.getInstance().getEventQueue().execute(sendMessageAction);
     }

@@ -1,6 +1,7 @@
 package spacegame.actions;
 
 import spacegame.Player;
+import spacegame.Ship;
 
 /**
  * Created by Leo on 10/05/2014.
@@ -14,9 +15,10 @@ public class MineCancelAction implements Runnable {
 
     @Override
     public void run() {
-        if(player.getMiningActivity() != null) {
-            player.getMiningActivity().cancel(false);
-            player.setMiningActivity(null);
+        Ship ship = player.getShip();
+        if(ship.getMiningActivity() != null) {
+            ship.getMiningActivity().cancel(false);
+            ship.setMiningActivity(null);
             new SendMessageAction(player.getSessionId(), "Mining operations halted.").run();
         }
     }
