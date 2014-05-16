@@ -20,7 +20,7 @@ public class LoginAction implements Runnable {
     public void run() {
         Player player = new Player(session, username);
         SendMessageAction sendMessageAction = new SendMessageAction(session,
-                String.format("Welcome, %s!", username));
+                String.format("Welcome, %s [%s]!", username, session));
         Game game = Game.getInstance();
         GameEventQueue eventQueue = game.getEventQueue();
         eventQueue.execute(sendMessageAction);

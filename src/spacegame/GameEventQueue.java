@@ -1,30 +1,28 @@
 package spacegame;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by Leo on 14/05/2014.
  */
 public class GameEventQueue implements Runnable {
-    private final List<Runnable> events;
-    private final List<Runnable> newEvents;
+    private final Queue<Runnable> events;
     private ScheduledExecutorService executorService;
 
     public GameEventQueue() {
         events = new LinkedList<Runnable>();
-        newEvents = new LinkedList<Runnable>();
         executorService = new ScheduledThreadPoolExecutor(4);
     }
 
     public void execute(Runnable event) {
         synchronized (events) {
-            newEvents.add(event);
+            events.add(event);
             events.notify();
         }
     }
@@ -32,7 +30,7 @@ public class GameEventQueue implements Runnable {
     public void executeAll(Runnable[] events) {
         synchronized (this.events) {
             for(Runnable r : events) {
-                this.newEvents.add(r);
+                this.events.add(r);
             }
             this.events.notify();
         }
@@ -61,11 +59,7 @@ public class GameEventQueue implements Runnable {
     @Override
     public void run() {
         while(true) {
-            synchronized (events) {
-                if(!newEvents.isEmpty()) {
-                    events.addAll(newEvents);
-                    newEvents.clear();
-                }
+            synchronized(events) {
                 if(events.isEmpty()) {
                     try {
                         events.wait();
@@ -73,11 +67,7 @@ public class GameEventQueue implements Runnable {
                         e.printStackTrace();
                     }
                 } else {
-                    Iterator<Runnable> it = events.iterator();
-                    while (it.hasNext()) {
-                        it.next().run();
-                        it.remove();
-                    }
+                    events.remove().run();
                 }
             }
         }

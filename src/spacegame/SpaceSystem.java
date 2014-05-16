@@ -51,7 +51,7 @@ public class SpaceSystem {
     }
 
     public void removePlayer(Player player) {
-        players.remove(player);
+        players.remove(player.getSessionId());
     }
 
     public int getId() {

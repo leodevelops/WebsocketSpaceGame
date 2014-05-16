@@ -51,4 +51,9 @@ public class Transport {
     public void onMessage(String message, Session session) {
         MessageHandler.getInstance().handle(session.getId(), message);
     }
+
+    @OnError
+    public void onError(Session session, Throwable t) {
+        //onClose(session, null);
+    }
 }
