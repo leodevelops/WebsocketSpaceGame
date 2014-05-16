@@ -1,8 +1,8 @@
 package spacegame.actions;
 
 import spacegame.Game;
+import spacegame.GeometryUtil;
 import spacegame.Player;
-import spacegame.Util;
 
 import java.util.concurrent.TimeUnit;
 
@@ -26,7 +26,7 @@ public class WarpDepartureAction implements Runnable {
         if(player == null) {
             return;
         }
-        int distance = Util.calculateDistance(destinationX, destinationY,
+        int distance = GeometryUtil.getDistance(destinationX, destinationY,
                 player.getPositionX(), player.getPositionY());
         int eta = Math.max((int) (distance / 10), 1);
         WarpArrivalAction warpAction = new WarpArrivalAction(player, destinationX, destinationY);

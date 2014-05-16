@@ -21,7 +21,7 @@ public class SellMetalAction implements Runnable {
         Player player = Game.getInstance().getPlayers().get(session);
         Ship ship = player.getShip();
         Planet planet = player.getSpaceSystem().getPlanet(this.planet);
-        if(Util.calculateDistance(player, planet) > 10) {
+        if(GeometryUtil.getDistance(player, planet) > 10) {
             Game.getInstance().getEventQueue().execute(new SendMessageAction(session, "You are too far away."));
             return;
         }

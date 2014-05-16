@@ -1,6 +1,7 @@
 package spacegame.actions;
 
 import spacegame.Asteroid;
+import spacegame.GeometryUtil;
 import spacegame.Player;
 import spacegame.Ship;
 
@@ -21,6 +22,11 @@ public class MiningProgressAction implements Runnable {
         Ship ship = player.getShip();
         int asteroidQuantity = asteroid.getMetalQuantity();
         int cargoCurrent = ship.getCargoCurrent();
+        int distance = GeometryUtil.getDistance(player, asteroid);
+        if(distance > 10) {
+            new MineCancelAction(player).run();
+            return;
+        }
         if(cargoCurrent < ship.getCargoMaximum()) {
             if(asteroidQuantity > 0) {
                 asteroid.setMetalQuantity(asteroidQuantity - 1);

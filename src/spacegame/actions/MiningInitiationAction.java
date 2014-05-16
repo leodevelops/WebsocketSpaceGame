@@ -21,7 +21,7 @@ public class MiningInitiationAction implements Runnable {
         Player player = Game.getInstance().getPlayers().get(session);
         Ship ship = player.getShip();
         Asteroid asteroid = player.getSpaceSystem().getAsteroid(this.asteroid);
-        if(Util.calculateDistance(player, asteroid) > 10) {
+        if(GeometryUtil.getDistance(player, asteroid) > 10) {
             SendMessageAction sendMessageAction = new SendMessageAction(session, "Too far away...");
             Game.getInstance().getEventQueue().execute(sendMessageAction);
             return;
