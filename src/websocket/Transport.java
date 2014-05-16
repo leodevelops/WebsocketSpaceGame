@@ -37,6 +37,7 @@ public class Transport {
     public void onOpen(Session session) {
         //logger.info("Connected: " + session.getId());
         sessions.put(session.getId(), session);
+        session.setMaxIdleTimeout(0);
         //logger.info(String.format("%d clients connected.", sessions.size()));
     }
 
@@ -44,6 +45,7 @@ public class Transport {
     public void onClose(Session session, CloseReason closeReason) {
         //logger.info(String.format("Session %s closed because of %s", session.getId(), closeReason));
         sessions.remove(session.getId());
+        MessageHandler.getInstance().connectionClosed(session.getId());
     }
 
     @OnMessage

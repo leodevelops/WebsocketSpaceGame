@@ -22,6 +22,10 @@ public class MessageHandler {
 
     private final Logger log = Logger.getLogger(MessageHandler.class.getName());
 
+    public void connectionClosed(String session) {
+        Game.getInstance().getEventQueue().execute(new RemovePlayerAction(session));
+    }
+
     public void handle(String session, String message) {
         String[] command = message.split(" ", 2);
         MessageType type;
