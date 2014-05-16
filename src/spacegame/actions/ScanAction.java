@@ -30,7 +30,7 @@ public class ScanAction implements Runnable {
                     planet.getPositionY()));
         }
         for(Player _player : player.getSpaceSystem().getPlayers()) {
-            if(player.getShip().isWarping()) {
+            if(_player.getShip().isWarping()) {
                 continue;
             }
             resp.append(String.format("<li>Player [%s] @ (%d, %d)</li>", _player.getUsername(),
