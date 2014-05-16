@@ -37,7 +37,6 @@ public class Transport {
     public void onOpen(Session session) {
         //logger.info("Connected: " + session.getId());
         sessions.put(session.getId(), session);
-        session.setMaxIdleTimeout(0);
         //logger.info(String.format("%d clients connected.", sessions.size()));
     }
 
