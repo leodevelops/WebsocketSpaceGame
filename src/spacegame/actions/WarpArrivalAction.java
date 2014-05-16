@@ -24,5 +24,6 @@ public class WarpArrivalAction implements Runnable {
         player.setPositionX(positionX);
         player.setPositionY(positionY);
         notification.run();
+        player.getShip().setWarping(false);
     }
 }

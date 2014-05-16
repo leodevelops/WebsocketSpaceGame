@@ -3,6 +3,7 @@ package spacegame.actions;
 import spacegame.Game;
 import spacegame.GeometryUtil;
 import spacegame.Player;
+import spacegame.Ship;
 
 import java.util.concurrent.TimeUnit;
 
@@ -23,6 +24,7 @@ public class WarpDepartureAction implements Runnable {
     @Override
     public void run() {
         Player player = Game.getInstance().getPlayers().get(session);
+        Ship ship = player.getShip();
         if(player == null) {
             return;
         }
@@ -35,5 +37,6 @@ public class WarpDepartureAction implements Runnable {
         SendMessageAction sendMessageAction = new SendMessageAction(session,
                 String.format("Initiating warp to (%d, %d), ETA: %d sec", destinationX, destinationY, eta));
         Game.getInstance().getEventQueue().execute(sendMessageAction);
+        ship.setWarping(true);
     }
 }

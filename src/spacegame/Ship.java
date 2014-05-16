@@ -11,10 +11,12 @@ public class Ship {
     private int cargoMaximum;
     private int cargoCurrent;
     private ScheduledFuture miningActivity;
+    private boolean warping;
 
     public Ship(String name) {
         this.name = name;
         cargoMaximum = 100;
+        warping = false;
     }
 
     public String getName() {
@@ -55,5 +57,13 @@ public class Ship {
 
     public void setMiningActivity(ScheduledFuture miningActivity) {
         this.miningActivity = miningActivity;
+    }
+
+    public boolean isWarping() {
+        return warping;
+    }
+
+    public void setWarping(boolean warping) {
+        this.warping = warping;
     }
 }
