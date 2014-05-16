@@ -29,6 +29,10 @@ public class ScanAction implements Runnable {
             resp.append(String.format("<li>Planet #%d @ (%d, %d)</li>", planet.getId(), planet.getPositionX(),
                     planet.getPositionY()));
         }
+        for(Player _player : player.getSpaceSystem().getPlayers()) {
+            resp.append(String.format("<li>Player [%s] @ (%d, %d)</li>", _player.getUsername(),
+                    _player.getPositionX(), _player.getPositionY()));
+        }
         resp.append("</ul>");
         SendMessageAction sendMessageAction = new SendMessageAction(session, resp.toString());
         Game.getInstance().getEventQueue().execute(sendMessageAction);
