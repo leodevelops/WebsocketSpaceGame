@@ -51,7 +51,7 @@ input_frm.onsubmit = function() {
 	input_txt.value = '';
 	command("> " + input);
 	socket.send(input);
-	
+	return false;
 }
 
 function message(data) {
